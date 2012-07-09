@@ -10,10 +10,11 @@ String.prototype.startsWith = function(str) {
 
 function Snorql() {
     // modify this._endpoint to point to your SPARQL endpoint
-    this._endpoint = document.location.href.match(/^([^?]*)snorql\//)[1] + 'sparql';
+    this._endpoint = document.location.href.match(/^([^?]*)snorql\//)[1] + 'sparql/';
     // modify these to your likeing
     this._poweredByLink = 'http://www4.wiwiss.fu-berlin.de/bizer/d2r-server/';
     this._poweredByLabel = 'D2R Server';
+    this._limit = 100;
     this._enableNamedGraphs = false;
 
     this._browserBase = null;
@@ -91,6 +92,9 @@ function Snorql() {
             var resultTitle = 'SPARQL results:';
             querytext = this._betterUnescape(queryString.match(/query=([^&]*)/)[1]);
             var query = prefixes + querytext;
+        }
+        if (this._limit) {
+            query += ' LIMIT ' + this._limit;
         }
         if (!querytext) {
             querytext = query;
